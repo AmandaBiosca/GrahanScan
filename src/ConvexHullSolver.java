@@ -11,6 +11,7 @@ public interface ConvexHullSolver {
 	 * 
 	 * Sua tarefa eh implementar o algoritmo "Grahan Scan", conforme descricao em
 	 * https://en.wikipedia.org/wiki/Graham_scan
+	 * @throws DequeEmptyException 
 	 */
-	public List<Coordinate> findConvexHull(List<Coordinate> points);
+	public List<Coordinate> findConvexHull(List<Coordinate> points) throws DequeEmptyException;
 }

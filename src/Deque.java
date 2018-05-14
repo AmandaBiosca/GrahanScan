@@ -7,9 +7,9 @@
  */
 public interface Deque<T> {
 
-	public void addFirst(Object obj);
+	public void addFirst(T obj);
 
-	public void addLast(Object obj);
+	public void addLast(T obj);
 
 	public T removeFirst() throws DequeEmptyException;
 
