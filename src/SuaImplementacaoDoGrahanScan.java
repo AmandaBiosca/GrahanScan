@@ -6,7 +6,7 @@ public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Coordinate> findConvexHull(List<Coordinate> points) throws DequeEmptyException {
+	public List<Coordinate> findConvexHull(List<Coordinate> points)  {
 		// TODO Auto-generated method stub
 		
 		//if(points == null) throw new Exception();
@@ -15,7 +15,6 @@ public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
 		Coordinate P = null;
 		int i = 0;
 		for(Coordinate p2 : points) {
-			System.out.println("entrei");
 			if(i == 0) {
 				P = p2;
 				i++;
@@ -37,41 +36,53 @@ public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
 		
 		int k= 0;
 		for(Coordinate t1 : points) {
+			System.out.println("k= " + k);
 			if(k==0) deque.addFirst(t1);
 			if(k<3 && k>0) deque.addLast(t1);
 			
 			else {
-				Coordinate teste = (Coordinate) deque.getFirst();
-				System.out.println("primeiro do deque X= " + teste.getX() + " Y= "+ teste.getY());
-				Coordinate ultimo = (Coordinate) deque.getLast();
-				System.out.println("ultimo X= " + ultimo.getX() + " Y=" + ultimo.getY());
-				Coordinate penultimo = (Coordinate) deque.getPenultimate();
-				double curva = (((ultimo.getX() - penultimo.getX())*(t1.getY()-penultimo.getY())) - ((ultimo.getX()-penultimo.getY())*(t1.getX()-penultimo.getX())));
-				
-				if(curva > 0) {//curva para esquerda
-					deque.addLast(t1);
-				}
-				
-				if(curva == 0) { //colineares
-					if(t1.getY()> ultimo.getY() && t1.getY() > penultimo.getY()) {
-						deque.removeLast();
-						deque.removeLast();
+				Coordinate teste;
+				try {
+					teste = (Coordinate) deque.getFirst();
+					Coordinate ultimo = (Coordinate) deque.getLast();
+					Coordinate penultimo = (Coordinate) deque.getPenultimate();
+					double curva = (((ultimo.getX() - penultimo.getX())*(t1.getY()-penultimo.getY())) - ((ultimo.getX()-penultimo.getY())*(t1.getX()-penultimo.getX())));
+					
+					System.out.println("curva " + curva);
+					if(curva > 0) {//curva para esquerda
 						deque.addLast(t1);
 					}
-					if(t1.getY() > ultimo.getY() && t1.getY() < penultimo.getY()) {
+					
+					if(curva == 0) { //colineares
+						if(t1.getY()> ultimo.getY() && t1.getY() > penultimo.getY()) {
+							deque.removeLast();
+							deque.removeLast();
+							deque.addLast(t1);
+						}
+						if(t1.getY() > ultimo.getY() && t1.getY() < penultimo.getY()) {
+							//System.out.println("entrei");
+							deque.removeLast();
+						}
+					}
+					
+					if(curva<0) {
 						System.out.println("entrei");
 						deque.removeLast();
+						deque.addLast(t1);
+						System.out.println("t1 X="+ t1.getX() + " Y="+ t1.getY());
 					}
-				}
-				
-				else {
-					deque.removeLast();
-					deque.addLast(t1);
-				}
+					
+					System.out.println("primeiro do deque X= " + teste.getX() + " Y= "+ teste.getY());
+					System.out.println("ultimo X= " + ultimo.getX() + " Y=" + ultimo.getY());
+					
+				} catch (DequeEmptyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
 			}
 			k++;
 		}
-
+	
 		return  (List<Coordinate>) deque;
 	}
 
