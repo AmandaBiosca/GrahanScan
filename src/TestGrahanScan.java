@@ -82,7 +82,7 @@ public class TestGrahanScan {
 			Coordinate c2 = it.next();
 
 			if (!c1.equals(c2)) {
-				throw new RuntimeException("Saída incorreta");
+				throw new RuntimeException("Saida incorreta");
 			}
 		}
 		
