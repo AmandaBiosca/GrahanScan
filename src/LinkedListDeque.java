@@ -28,25 +28,29 @@ public class LinkedListDeque<T> implements Deque{
 			size ++;
 			node.element = obj;
 		}
-		Node node = new Node (obj);
-		node.prox = inicio;
-		node.ant = null;
-		inicio.ant = node;
-		inicio = node;
-		size ++;
-		node.element = obj;
+		else {
+			Node node = new Node (obj);
+			node.prox = inicio;
+			node.ant = null;
+			inicio.ant = node;
+			inicio = node;
+			size ++;
+			node.element = obj;
+		}
+		
 	}
 
 	@Override
 	public void addLast(Object obj) {
 		// TODO Auto-generated method stub
 		Node node = new Node (obj);
+		node.element = obj;
 		fim.prox = node;
 		node.prox = null;
 		node.ant = fim;
 		fim = node;
 		size++;
-		node.element = obj;
+
 	}
 
 	@Override
@@ -61,14 +65,14 @@ public class LinkedListDeque<T> implements Deque{
 	}
 
 	@Override
-	public T removeLast() throws DequeEmptyException {
+	public void removeLast() throws DequeEmptyException {
 		// TODO Auto-generated method stub
 		if (isEmpty()) throw new DequeEmptyException();
 		T resp = (T) fim.element;
 		fim = fim.ant;
 		fim.prox = null;
 		size--;
-		return resp;
+		//return resp;
 	}
 
 	@Override

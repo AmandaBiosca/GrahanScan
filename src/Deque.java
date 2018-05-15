@@ -13,7 +13,7 @@ public interface Deque<T> {
 
 	public T removeFirst() throws DequeEmptyException;
 
-	public T removeLast() throws DequeEmptyException;
+	public void removeLast() throws DequeEmptyException;
 
 	public T getFirst() throws DequeEmptyException;
 

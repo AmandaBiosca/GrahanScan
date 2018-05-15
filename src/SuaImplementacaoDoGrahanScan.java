@@ -1,5 +1,6 @@
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
@@ -8,9 +9,7 @@ public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
 	@Override
 	public List<Coordinate> findConvexHull(List<Coordinate> points)  {
 		// TODO Auto-generated method stub
-		
-		//if(points == null) throw new Exception();
-		
+				
 		//procurar como achar esse ponto P com menor Y
 		Coordinate P = null;
 		int i = 0;
@@ -19,41 +18,33 @@ public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
 				P = p2;
 				i++;
 			}
-			if(p2.getY() < P.getY()) P = p2; //nao seria <?
+			if(p2.getY() < P.getY()) P = p2; 
 		}
 		
-		System.out.println("P get X: " + P.getX() + " P get Y: " + P.getY());
 		//ordenar o vetor pelo angulo que os pontos fazem com o ponto P em relacao ao eixo X
 		ordenarVetor (points, P);
-		
-		int j=0;
-		for(Coordinate t1 : points) {
-			System.out.println("Ponto na posição J= " + j + " X= " + t1.getX() + " Y= " + t1.getY());
-			j++;
-		}
 		
 		LinkedListDeque<Coordinate> deque =  new LinkedListDeque<Coordinate>();
 		
 		int k= 0;
+		double curva =0;
 		for(Coordinate t1 : points) {
-			System.out.println("k= " + k);
 			if(k==0) deque.addFirst(t1);
 			if(k<3 && k>0) deque.addLast(t1);
-			
-			else {
+			if(k>=3) {
 				Coordinate teste;
 				try {
 					teste = (Coordinate) deque.getFirst();
 					Coordinate ultimo = (Coordinate) deque.getLast();
 					Coordinate penultimo = (Coordinate) deque.getPenultimate();
-					double curva = (((ultimo.getX() - penultimo.getX())*(t1.getY()-penultimo.getY())) - ((ultimo.getX()-penultimo.getY())*(t1.getX()-penultimo.getX())));
 					
-					System.out.println("curva " + curva);
-					if(curva > 0) {//curva para esquerda
+					 curva = (((ultimo.getX() - penultimo.getX())*(t1.getY()-penultimo.getY())) - ((ultimo.getX()-penultimo.getY())*(t1.getX()-penultimo.getX())));
+					
+					if(curva > 0) {//curva para esquerda, somente adiciona
 						deque.addLast(t1);
 					}
 					
-					if(curva == 0) { //colineares
+					/*if(curva == 0) { //colineares
 						if(t1.getY()> ultimo.getY() && t1.getY() > penultimo.getY()) {
 							deque.removeLast();
 							deque.removeLast();
@@ -63,18 +54,15 @@ public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
 							//System.out.println("entrei");
 							deque.removeLast();
 						}
-					}
+					}*/
 					
-					if(curva<0) {
-						System.out.println("entrei");
+					if(curva == 0) continue; //colineares
+					
+					if(curva<0) { //curva para direita, voce remove o ultimo e adiciona o que esta comparando
 						deque.removeLast();
 						deque.addLast(t1);
-						System.out.println("t1 X="+ t1.getX() + " Y="+ t1.getY());
 					}
-					
-					System.out.println("primeiro do deque X= " + teste.getX() + " Y= "+ teste.getY());
-					System.out.println("ultimo X= " + ultimo.getX() + " Y=" + ultimo.getY());
-					
+											
 				} catch (DequeEmptyException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -82,8 +70,23 @@ public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
 			}
 			k++;
 		}
-	
-		return  (List<Coordinate>) deque;
+		
+		if (curva<0) {
+			deque.addLast(points.get(k));
+		}
+		List<Coordinate> resp = new LinkedList<Coordinate>();
+		
+		//modificacao para que a resposta seja em list
+		while(!deque.isEmpty()) {
+			try {
+				resp.add(deque.removeFirst());
+			} catch (DequeEmptyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+				
+		return  resp;
 	}
 
 	
