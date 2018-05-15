@@ -15,7 +15,7 @@ public class TestGrahanScan {
 	}
 
 	private ConvexHullSolver getConvexHullSolver() {
-		return new SuaImplementacaoDoGrahanScan();
+		return new GrahanScan();
 	}
 
 	// ordena pela coordenada x
@@ -48,7 +48,7 @@ public class TestGrahanScan {
 	}
 
 	public void applyTestCase(String testCaseFileName)
-			throws FileNotFoundException {
+			throws FileNotFoundException, DequeEmptyException {
 		System.out.println("Iniciando o test case do arquivo: "+ testCaseFileName);
 		Scanner in = new Scanner(new File(testCaseFileName));
 		List<Coordinate> points = new LinkedList<Coordinate>();
@@ -82,14 +82,14 @@ public class TestGrahanScan {
 			Coordinate c2 = it.next();
 
 			if (!c1.equals(c2)) {
-				throw new RuntimeException("Saída incorreta");
+				throw new RuntimeException("Saida incorreta");
 			}
 		}
 		
 		System.out.println("Teste realizado com sucesso");
 	}
 	
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, DequeEmptyException {
 		TestGrahanScan test = new TestGrahanScan();
 		test.applyTestCase("src/testCase1.txt");
 		
