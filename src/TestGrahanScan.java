@@ -15,7 +15,7 @@ public class TestGrahanScan {
 	}
 
 	private ConvexHullSolver getConvexHullSolver() {
-		return new SuaImplementacaoDoGrahanScan();
+		return new GrahanScan();
 	}
 
 	// ordena pela coordenada x

@@ -3,7 +3,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SuaImplementacaoDoGrahanScan implements ConvexHullSolver {
+public class GrahanScan implements ConvexHullSolver {
 
 	@SuppressWarnings("unchecked")
 	@Override
